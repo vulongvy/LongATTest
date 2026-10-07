@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Long AT Test - Công Cụ Kiểm Tra Toàn Diện Máy Tính</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <div class="brand">
+      <img src="logo.png" alt="Long AT Logo" class="brand-logo-img">
+      <div>
+        <div class="brand-title">Long AT Test</div>
+        <div class="brand-subtitle">Hardware Diagnostic & Testing Suite</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-secondary" id="btnDevMgmt" title="Mở Trình quản lý thiết bị Windows">
+        <span>🖲️</span> Device Manager
+      </button>
+      <button class="btn btn-secondary" id="btnWinUpdate" title="Mở Windows Update">
+        <span>🔄</span> Windows Update
+      </button>
+      <button class="btn btn-primary" id="btnExportReport" title="Xuất báo cáo kiểm tra máy ra Desktop">
+        <span>📑</span> Xuất Báo Cáo (.txt)
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-item active" data-tab="tab-keyboard">
+        <span class="icon">⌨️</span> Bàn Phím (Key)
+      </div>
+      <div class="nav-item" data-tab="tab-battery">
+        <span class="icon">🔋</span> Kiểm Tra Pin
+      </div>
+      <div class="nav-item" data-tab="tab-lcd">
+        <span class="icon">🖥️</span> Màn Hình LCD
+      </div>
+      <div class="nav-item" data-tab="tab-speaker">
+        <span class="icon">🔊</span> Kiểm Tra Loa
+      </div>
+      <div class="nav-item" data-tab="tab-mic">
+        <span class="icon">🎙️</span> Kiểm Tra Mic
+      </div>
+      <div class="nav-item" data-tab="tab-camera">
+        <span class="icon">📷</span> Camera / Webcam
+      </div>
+      <div class="nav-item" data-tab="tab-specs">
+        <span class="icon">💻</span> Cấu Hình Máy
+      </div>
+      <div class="nav-item" data-tab="tab-driver">
+        <span class="icon">🏷️</span> Driver Theo Serial
+      </div>
+    </nav>
+
+    <!-- Main Content Tabs -->
+    <main class="main-content">
+
+      <!-- ================= 1. TAB KEYBOARD ================= -->
+      <section class="tab-pane active" id="tab-keyboard">
+        <div class="keyboard-toolbar">
+          <div class="key-stats">
+            <div class="key-stat-pill">
+              Phím vừa bấm: <strong id="lastKeyDisplay">Chưa bấm</strong>
+            </div>
+            <div class="key-stat-pill">
+              Mã phím (Code): <strong id="lastCodeDisplay">-</strong>
+            </div>
+            <div class="key-stat-pill">
+              Tiến độ: <strong id="keyTestedCount">0</strong> / <span id="keyTotalCount">104</span> phím (<strong id="keyTestedPercent">0%</strong>)
+            </div>
+            <div class="key-stat-pill">
+              Ghosting (Đang giữ): <strong id="keysHeldDisplay">0</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" id="btnToggleSound">
+              <span id="soundIcon">🔊</span> Âm Click: Bật
+            </button>
+            <button class="btn btn-secondary" id="btnResetKeyboard">
+              <span>🔄</span> Đặt Lại Phím
+            </button>
+          </div>
+        </div>
+
+        <!-- On-Screen Keyboard Matrix -->
+        <div class="keyboard-container" id="kbMatrix">
+          <!-- Row 1: Esc, F1-F12, PrtSc, Scroll, Pause -->
+          <div class="kb-row">
+            <div class="key" data-code="Escape"><span class="key-badge">0</span><span class="key-main">Esc</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="F1"><span class="key-badge">0</span><span class="key-main">F1</span></div>
+            <div class="key" data-code="F2"><span class="key-badge">0</span><span class="key-main">F2</span></div>
+            <div class="key" data-code="F3"><span class="key-badge">0</span><span class="key-main">F3</span></div>
+            <div class="key" data-code="F4"><span class="key-badge">0</span><span class="key-main">F4</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="F5"><span class="key-badge">0</span><span class="key-main">F5</span></div>
+            <div class="key" data-code="F6"><span class="key-badge">0</span><span class="key-main">F6</span></div>
+            <div class="key" data-code="F7"><span class="key-badge">0</span><span class="key-main">F7</span></div>
+            <div class="key" data-code="F8"><span class="key-badge">0</span><span class="key-main">F8</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="F9"><span class="key-badge">0</span><span class="key-main">F9</span></div>
+            <div class="key" data-code="F10"><span class="key-badge">0</span><span class="key-main">F10</span></div>
+            <div class="key" data-code="F11"><span class="key-badge">0</span><span class="key-main">F11</span></div>
+            <div class="key" data-code="F12"><span class="key-badge">0</span><span class="key-main">F12</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="PrintScreen"><span class="key-badge">0</span><span class="key-main">PrtSc</span></div>
+            <div class="key" data-code="ScrollLock"><span class="key-badge">0</span><span class="key-main">ScLk</span></div>
+            <div class="key" data-code="Pause"><span class="key-badge">0</span><span class="key-main">Pause</span></div>
+          </div>
+
+          <!-- Row 2: ~ to Backspace, Nav, Numpad top -->
+          <div class="kb-row">
+            <div class="key" data-code="Backquote"><span class="key-badge">0</span><span class="key-sub">~</span><span class="key-main">`</span></div>
+            <div class="key" data-code="Digit1"><span class="key-badge">0</span><span class="key-sub">!</span><span class="key-main">1</span></div>
+            <div class="key" data-code="Digit2"><span class="key-badge">0</span><span class="key-sub">@</span><span class="key-main">2</span></div>
+            <div class="key" data-code="Digit3"><span class="key-badge">0</span><span class="key-sub">#</span><span class="key-main">3</span></div>
+            <div class="key" data-code="Digit4"><span class="key-badge">0</span><span class="key-sub">$</span><span class="key-main">4</span></div>
+            <div class="key" data-code="Digit5"><span class="key-badge">0</span><span class="key-sub">%</span><span class="key-main">5</span></div>
+            <div class="key" data-code="Digit6"><span class="key-badge">0</span><span class="key-sub">^</span><span class="key-main">6</span></div>
+            <div class="key" data-code="Digit7"><span class="key-badge">0</span><span class="key-sub">&</span><span class="key-main">7</span></div>
+            <div class="key" data-code="Digit8"><span class="key-badge">0</span><span class="key-sub">*</span><span class="key-main">8</span></div>
+            <div class="key" data-code="Digit9"><span class="key-badge">0</span><span class="key-sub">(</span><span class="key-main">9</span></div>
+            <div class="key" data-code="Digit0"><span class="key-badge">0</span><span class="key-sub">)</span><span class="key-main">0</span></div>
+            <div class="key" data-code="Minus"><span class="key-badge">0</span><span class="key-sub">_</span><span class="key-main">-</span></div>
+            <div class="key" data-code="Equal"><span class="key-badge">0</span><span class="key-sub">+</span><span class="key-main">=</span></div>
+            <div class="key w-200" data-code="Backspace"><span class="key-badge">0</span><span class="key-main">⌫ Backspace</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="Insert"><span class="key-badge">0</span><span class="key-main">Ins</span></div>
+            <div class="key" data-code="Home"><span class="key-badge">0</span><span class="key-main">Home</span></div>
+            <div class="key" data-code="PageUp"><span class="key-badge">0</span><span class="key-main">PgUp</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="NumLock"><span class="key-badge">0</span><span class="key-main">Num</span></div>
+            <div class="key" data-code="NumpadDivide"><span class="key-badge">0</span><span class="key-main">/</span></div>
+            <div class="key" data-code="NumpadMultiply"><span class="key-badge">0</span><span class="key-main">*</span></div>
+            <div class="key" data-code="NumpadSubtract"><span class="key-badge">0</span><span class="key-main">-</span></div>
+          </div>
+
+          <!-- Row 3: Tab to Backslash, Nav, Numpad -->
+          <div class="kb-row">
+            <div class="key w-150" data-code="Tab"><span class="key-badge">0</span><span class="key-main">Tab ⇥</span></div>
+            <div class="key" data-code="KeyQ"><span class="key-badge">0</span><span class="key-main">Q</span></div>
+            <div class="key" data-code="KeyW"><span class="key-badge">0</span><span class="key-main">W</span></div>
+            <div class="key" data-code="KeyE"><span class="key-badge">0</span><span class="key-main">E</span></div>
+            <div class="key" data-code="KeyR"><span class="key-badge">0</span><span class="key-main">R</span></div>
+            <div class="key" data-code="KeyT"><span class="key-badge">0</span><span class="key-main">T</span></div>
+            <div class="key" data-code="KeyY"><span class="key-badge">0</span><span class="key-main">Y</span></div>
+            <div class="key" data-code="KeyU"><span class="key-badge">0</span><span class="key-main">U</span></div>
+            <div class="key" data-code="KeyI"><span class="key-badge">0</span><span class="key-main">I</span></div>
+            <div class="key" data-code="KeyO"><span class="key-badge">0</span><span class="key-main">O</span></div>
+            <div class="key" data-code="KeyP"><span class="key-badge">0</span><span class="key-main">P</span></div>
+            <div class="key" data-code="BracketLeft"><span class="key-badge">0</span><span class="key-sub">{</span><span class="key-main">[</span></div>
+            <div class="key" data-code="BracketRight"><span class="key-badge">0</span><span class="key-sub">}</span><span class="key-main">]</span></div>
+            <div class="key w-150" data-code="Backslash"><span class="key-badge">0</span><span class="key-sub">|</span><span class="key-main">\</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="Delete"><span class="key-badge">0</span><span class="key-main">Del</span></div>
+            <div class="key" data-code="End"><span class="key-badge">0</span><span class="key-main">End</span></div>
+            <div class="key" data-code="PageDown"><span class="key-badge">0</span><span class="key-main">PgDn</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="Numpad7"><span class="key-badge">0</span><span class="key-main">7</span></div>
+            <div class="key" data-code="Numpad8"><span class="key-badge">0</span><span class="key-main">8</span></div>
+            <div class="key" data-code="Numpad9"><span class="key-badge">0</span><span class="key-main">9</span></div>
+            <div class="key" data-code="NumpadAdd"><span class="key-badge">0</span><span class="key-main">+</span></div>
+          </div>
+
+          <!-- Row 4: CapsLock to Enter, Numpad -->
+          <div class="kb-row">
+            <div class="key w-175" data-code="CapsLock"><span class="key-badge">0</span><span class="key-main">Caps Lock</span></div>
+            <div class="key" data-code="KeyA"><span class="key-badge">0</span><span class="key-main">A</span></div>
+            <div class="key" data-code="KeyS"><span class="key-badge">0</span><span class="key-main">S</span></div>
+            <div class="key" data-code="KeyD"><span class="key-badge">0</span><span class="key-main">D</span></div>
+            <div class="key" data-code="KeyF"><span class="key-badge">0</span><span class="key-main">F</span></div>
+            <div class="key" data-code="KeyG"><span class="key-badge">0</span><span class="key-main">G</span></div>
+            <div class="key" data-code="KeyH"><span class="key-badge">0</span><span class="key-main">H</span></div>
+            <div class="key" data-code="KeyJ"><span class="key-badge">0</span><span class="key-main">J</span></div>
+            <div class="key" data-code="KeyK"><span class="key-badge">0</span><span class="key-main">K</span></div>
+            <div class="key" data-code="KeyL"><span class="key-badge">0</span><span class="key-main">L</span></div>
+            <div class="key" data-code="Semicolon"><span class="key-badge">0</span><span class="key-sub">:</span><span class="key-main">;</span></div>
+            <div class="key" data-code="Quote"><span class="key-badge">0</span><span class="key-sub">"</span><span class="key-main">'</span></div>
+            <div class="key w-225" data-code="Enter"><span class="key-badge">0</span><span class="key-main">↵ Enter</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" style="visibility:hidden"></div>
+            <div class="key" style="visibility:hidden"></div>
+            <div class="key" style="visibility:hidden"></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="Numpad4"><span class="key-badge">0</span><span class="key-main">4</span></div>
+            <div class="key" data-code="Numpad5"><span class="key-badge">0</span><span class="key-main">5</span></div>
+            <div class="key" data-code="Numpad6"><span class="key-badge">0</span><span class="key-main">6</span></div>
+            <div class="key" style="visibility:hidden"></div>
+          </div>
+
+          <!-- Row 5: Shift, Z-M, Shift, Up, Numpad -->
+          <div class="kb-row">
+            <div class="key w-225" data-code="ShiftLeft"><span class="key-badge">0</span><span class="key-main">⇧ Shift</span></div>
+            <div class="key" data-code="KeyZ"><span class="key-badge">0</span><span class="key-main">Z</span></div>
+            <div class="key" data-code="KeyX"><span class="key-badge">0</span><span class="key-main">X</span></div>
+            <div class="key" data-code="KeyC"><span class="key-badge">0</span><span class="key-main">C</span></div>
+            <div class="key" data-code="KeyV"><span class="key-badge">0</span><span class="key-main">V</span></div>
+            <div class="key" data-code="KeyB"><span class="key-badge">0</span><span class="key-main">B</span></div>
+            <div class="key" data-code="KeyN"><span class="key-badge">0</span><span class="key-main">N</span></div>
+            <div class="key" data-code="KeyM"><span class="key-badge">0</span><span class="key-main">M</span></div>
+            <div class="key" data-code="Comma"><span class="key-badge">0</span><span class="key-sub"><</span><span class="key-main">,</span></div>
+            <div class="key" data-code="Period"><span class="key-badge">0</span><span class="key-sub">></span><span class="key-main">.</span></div>
+            <div class="key" data-code="Slash"><span class="key-badge">0</span><span class="key-sub">?</span><span class="key-main">/</span></div>
+            <div class="key w-275" data-code="ShiftRight"><span class="key-badge">0</span><span class="key-main">⇧ Shift</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" style="visibility:hidden"></div>
+            <div class="key" data-code="ArrowUp"><span class="key-badge">0</span><span class="key-main">↑</span></div>
+            <div class="key" style="visibility:hidden"></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="Numpad1"><span class="key-badge">0</span><span class="key-main">1</span></div>
+            <div class="key" data-code="Numpad2"><span class="key-badge">0</span><span class="key-main">2</span></div>
+            <div class="key" data-code="Numpad3"><span class="key-badge">0</span><span class="key-main">3</span></div>
+            <div class="key" data-code="NumpadEnter"><span class="key-badge">0</span><span class="key-main">↵</span></div>
+          </div>
+
+          <!-- Row 6: Ctrl, Win, Alt, Space, Alt, Win, Menu, Ctrl, Arrows, Numpad -->
+          <div class="kb-row">
+            <div class="key w-125" data-code="ControlLeft"><span class="key-badge">0</span><span class="key-main">Ctrl</span></div>
+            <div class="key w-125" data-code="MetaLeft"><span class="key-badge">0</span><span class="key-main">⊞ Win</span></div>
+            <div class="key w-125" data-code="AltLeft"><span class="key-badge">0</span><span class="key-main">Alt</span></div>
+            <div class="key w-space" data-code="Space"><span class="key-badge">0</span><span class="key-main">Spacebar</span></div>
+            <div class="key w-125" data-code="AltRight"><span class="key-badge">0</span><span class="key-main">Alt</span></div>
+            <div class="key w-125" data-code="MetaRight"><span class="key-badge">0</span><span class="key-main">⊞ Win</span></div>
+            <div class="key w-125" data-code="ContextMenu"><span class="key-badge">0</span><span class="key-main">☰ App</span></div>
+            <div class="key w-125" data-code="ControlRight"><span class="key-badge">0</span><span class="key-main">Ctrl</span></div>
+            <div class="kb-separator"></div>
+            <div class="key" data-code="ArrowLeft"><span class="key-badge">0</span><span class="key-main">←</span></div>
+            <div class="key" data-code="ArrowDown"><span class="key-badge">0</span><span class="key-main">↓</span></div>
+            <div class="key" data-code="ArrowRight"><span class="key-badge">0</span><span class="key-main">→</span></div>
+            <div class="kb-separator"></div>
+            <div class="key w-200" data-code="Numpad0"><span class="key-badge">0</span><span class="key-main">0 Ins</span></div>
+            <div class="key" data-code="NumpadDecimal"><span class="key-badge">0</span><span class="key-main">. Del</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. TAB BATTERY ================= -->
+      <section class="tab-pane" id="tab-battery">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🔋 Tình Trạng Pin & Nguồn Điện</div>
+            <button class="btn btn-secondary" id="btnOpenBatteryReport">
+              <span>📄</span> Mở Báo Cáo Windows Battery Report
+            </button>
+          </div>
+
+          <div id="batteryContent" class="battery-display">
+            <!-- Left: Visual Battery -->
+            <div class="battery-visual">
+              <div class="battery-center-text" id="batPercentDisplay">--%</div>
+              <div class="battery-fill" id="batFillBar" style="height: 0%;"></div>
+            </div>
+
+            <!-- Right: Detailed Metrics -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 16px;">
+              <div class="metrics-grid">
+                <div class="metric-box">
+                  <div class="metric-label">Dung Lượng Thiết Kế (Design)</div>
+                  <div class="metric-value" id="batDesignCap">-- mWh</div>
+                  <div class="metric-sub">Dung lượng gốc khi xuất xưởng</div>
+                </div>
+
+                <div class="metric-box">
+                  <div class="metric-label">Dung Lượng Sạc Đầy (Full Charge)</div>
+                  <div class="metric-value" id="batFullCap">-- mWh</div>
+                  <div class="metric-sub">Khả năng nạp tối đa hiện tại</div>
+                </div>
+
+                <div class="metric-box">
+                  <div class="metric-label">Độ Chai Pin (Wear Level)</div>
+                  <div class="metric-value" id="batWearLevel" style="color: #10b981;">--%</div>
+                  <div class="metric-sub" id="batHealthText">Đang phân tích...</div>
+                </div>
+
+                <div class="metric-box">
+                  <div class="metric-label">Số Chu Kỳ Sạc (Cycle Count)</div>
+                  <div class="metric-value" id="batCycles">--</div>
+                  <div class="metric-sub">Số lần sạc đầy 100%</div>
+                </div>
+              </div>
+
+              <div class="metric-box" style="margin-top: 8px;">
+                <div class="metric-label">Trạng Thái Kết Nối & Đánh Giá</div>
+                <div style="font-size: 15px; font-weight: 600; color: #38bdf8;" id="batStatusDesc">Đang tải...</div>
+                <div class="metric-sub" id="batDeviceType">Kiểm tra thông tin WMI & ACPI...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. TAB LCD ================= -->
+      <section class="tab-pane" id="tab-lcd">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🖥️ Kiểm Tra Màn Hình LCD (Điểm Chết, Hở Sáng, Màu Sắc)</div>
+            <div class="key-stat-pill">
+              Độ phân giải: <strong id="screenResDisplay">1920 x 1080</strong> | Tần số: <strong id="screenHzDisplay">-- Hz</strong>
+            </div>
+          </div>
+
+          <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">
+            Nhấn nút bên dưới để chuyển sang chế độ Toàn màn hình (Fullscreen). Nhấn <strong>Click Chuột Trái</strong> hoặc phím <strong>Space / Mũi tên</strong> để đổi các màu kiểm tra. Nhấn <strong>ESC</strong> để thoát.
+          </p>
+
+          <div style="display: flex; gap: 14px; margin-bottom: 24px;">
+            <button class="btn btn-primary" id="btnStartLcdTest" style="padding: 12px 28px; font-size: 15px;">
+              🚀 BẮT ĐẦU TEST TOÀN MÀN HÌNH (FULLSCREEN)
+            </button>
+          </div>
+
+          <div style="font-size: 13px; font-weight: 600; color: #94a3b8; margin-bottom: 12px;">
+            Danh Sách Các Màn Hình Kiểm Tra:
+          </div>
+          <div class="lcd-grid-preview" id="lcdPreviewGrid"></div>
+        </div>
+      </section>
+
+      <!-- ================= 4. TAB SPEAKER ================= -->
+      <section class="tab-pane" id="tab-speaker">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🔊 Kiểm Tra Kênh Âm Thanh & Loa (Left / Right Channel)</div>
+          </div>
+
+          <div class="speaker-tester-container">
+            <!-- Left Speaker -->
+            <div class="speaker-box" id="speakerLeftBox">
+              <div class="speaker-circle">🔈</div>
+              <div style="font-weight: 700; font-size: 16px;">LOA TRÁI (LEFT)</div>
+              <button class="btn btn-primary" id="btnTestLeft">
+                Phát Loa Trái
+              </button>
+            </div>
+
+            <!-- Both / Stereo -->
+            <div class="speaker-box" id="speakerCenterBox">
+              <div class="speaker-circle">🔊</div>
+              <div style="font-weight: 700; font-size: 16px;">CẢ 2 LOA (STEREO)</div>
+              <button class="btn btn-secondary" id="btnTestStereo">
+                Phát Cả Hai Loa
+              </button>
+            </div>
+
+            <!-- Right Speaker -->
+            <div class="speaker-box" id="speakerRightBox">
+              <div class="speaker-circle">🔈</div>
+              <div style="font-weight: 700; font-size: 16px;">LOA PHẢI (RIGHT)</div>
+              <button class="btn btn-primary" id="btnTestRight">
+                Phát Loa Phải
+              </button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px;">
+            <div class="card" style="padding: 16px; background: rgba(15, 23, 42, 0.5);">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #38bdf8;">
+                🎵 Quét Tần Số Âm Thanh (20Hz - 20,000Hz)
+              </div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                Quét từ tần số siêu trầm (Bass) qua âm trung (Mid) tới âm cao (Treble) để phát hiện rè màng loa hoặc mất dải âm.
+              </p>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="btn btn-secondary" id="btnSweepFreq">
+                  <span>〰️</span> Chạy Quét Tần Số (Sweep)
+                </button>
+                <span id="sweepFreqText" style="font-family: var(--font-mono); font-size: 13px; color: #10b981;">Tần số: 0 Hz</span>
+              </div>
+            </div>
+
+            <div class="card" style="padding: 16px; background: rgba(15, 23, 42, 0.5);">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #38bdf8;">
+                🎶 Nhạc Mẫu Kiểm Tra Âm Lượng Tối Đa
+              </div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                Phát đoạn nhạc beat mẫu phong phú để kiểm tra âm lượng tối đa xem loa có bị vỡ tiếng hay rè không.
+              </p>
+              <button class="btn btn-secondary" id="btnSampleAudio">
+                <span>▶️</span> Phát / Dừng Nhạc Mẫu
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. TAB MICROPHONE ================= -->
+      <section class="tab-pane" id="tab-mic">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🎙️ Kiểm Tra Micro & Ghi Âm Thử Giọng</div>
+            <select id="micSelect" class="btn btn-secondary" style="outline: none; max-width: 300px;">
+              <option value="">Đang tìm Micro...</option>
+            </select>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; color: var(--text-muted);">
+                <span>Cường Độ Âm Thanh Thời Gian Thực (Live Volume):</span>
+                <span id="micVolNumber" style="font-family: var(--font-mono); color: #38bdf8;">0%</span>
+              </div>
+              <div class="meter-bar">
+                <div class="meter-fill" id="micMeterFill"></div>
+              </div>
+            </div>
+
+            <!-- Waveform Canvas -->
+            <canvas id="micCanvas"></canvas>
+
+            <!-- Record & Playback Controls -->
+            <div style="display: flex; align-items: center; gap: 14px; margin-top: 8px; flex-wrap: wrap;">
+              <button class="btn btn-danger" id="btnRecordMic">
+                <span>🔴</span> Ghi Âm Thử (5 Giây)
+              </button>
+              <button class="btn btn-secondary" id="btnPlayRecording" disabled>
+                <span>▶️</span> Nghe Lại Đoạn Vừa Ghi
+              </button>
+              <span id="recordStatus" style="font-size: 13px; color: var(--text-muted);">Sẵn sàng ghi âm...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. TAB CAMERA ================= -->
+      <section class="tab-pane" id="tab-camera">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📷 Kiểm Tra Camera / Webcam (Laptop & USB)</div>
+            <div style="display: flex; gap: 10px;">
+              <select id="camSelect" class="btn btn-secondary" style="outline: none; max-width: 260px;">
+                <option value="">Đang quét Camera...</option>
+              </select>
+              <button class="btn btn-secondary" id="btnFlipCam" title="Lật gương">
+                <span>🔄</span> Lật Gương
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <!-- Live Preview -->
+            <div class="cam-preview-box">
+              <video id="camVideo" autoplay playsinline muted></video>
+              <div class="cam-overlay" id="camResolutionOverlay">Độ phân giải: Đang tải...</div>
+            </div>
+
+            <!-- Snapshot & Controls -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 250px;">
+              <button class="btn btn-primary" id="btnSnapCam">
+                <span>📸</span> Chụp Ảnh Kiểm Tra (Snapshot)
+              </button>
+
+              <div style="flex: 1; background: rgba(15, 23, 42, 0.6); border: 1px dashed var(--border-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 220px; position: relative;">
+                <img id="camSnapshotImg" style="width: 100%; height: 100%; object-fit: contain; display: none;" />
+                <span id="snapPlaceholder" style="font-size: 12px; color: var(--text-dim);">Chưa chụp ảnh</span>
+              </div>
+
+              <button class="btn btn-secondary" id="btnDownloadSnap" disabled>
+                <span>💾</span> Tải Ảnh Về Máy (.png)
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 7. TAB SPECS ================= -->
+      <section class="tab-pane" id="tab-specs">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">💻 Chi Tiết Cấu Hình Phần Cứng (System Specifications)</div>
+            <button class="btn btn-secondary" id="btnRefreshSpecs">
+              <span>🔄</span> Làm Mới Cấu Hình
+            </button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- System & Board -->
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">1. Thiết Bị & Bo Mạch Chủ (Motherboard / BIOS)</div>
+              <table class="specs-table">
+                <tbody>
+                  <tr><td class="prop-name">Hãng Sản Xuất</td><td class="prop-val" id="specSysBrand">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Model Máy</td><td class="prop-val" id="specSysModel">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Bo Mạch Chủ (Mainboard)</td><td class="prop-val" id="specBoardModel">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Serial Mainboard</td><td class="prop-val" id="specBoardSerial">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Phiên Bản BIOS</td><td class="prop-val" id="specBiosVersion">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- CPU -->
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">2. Bộ Vi Xử Lý (CPU)</div>
+              <table class="specs-table">
+                <tbody>
+                  <tr><td class="prop-name">Tên CPU</td><td class="prop-val" id="specCpuName">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Số Nhân / Số Luồng</td><td class="prop-val" id="specCpuCores">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Xung Nhịp / Cache</td><td class="prop-val" id="specCpuClock">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Memory -->
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">3. Bộ Nhớ RAM (Memory)</div>
+              <table class="specs-table">
+                <tbody>
+                  <tr><td class="prop-name">Tổng Dung Lượng RAM</td><td class="prop-val" id="specRamTotal">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Số Khe Cắm Sử Dụng</td><td class="prop-val" id="specRamSlots">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Chi Tiết Từng Thanh RAM</td><td class="prop-val" id="specRamSticks">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- GPU -->
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">4. Card Đồ Họa (GPU)</div>
+              <table class="specs-table">
+                <tbody id="specGpuTable">
+                  <tr><td class="prop-name">Card Đồ Họa</td><td class="prop-val">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Storage -->
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">5. Ổ Đĩa Lưu Trữ (Disks & Partitions)</div>
+              <table class="specs-table">
+                <tbody id="specStorageTable">
+                  <tr><td class="prop-name">Ổ Đĩa Vật Lý</td><td class="prop-val">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- OS & Network -->
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">6. Hệ Điều Hành & Card Mạng</div>
+              <table class="specs-table">
+                <tbody>
+                  <tr><td class="prop-name">Hệ Điều Hành Windows</td><td class="prop-val" id="specOsCaption">Đang tải...</td></tr>
+                  <tr><td class="prop-name">Card Mạng & IP</td><td class="prop-val" id="specNetwork">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10. TAB DRIVER BY SERIAL ================= -->
+      <section class="tab-pane" id="tab-driver">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🏷️ Tra Cứu Driver Chuẩn Theo Serial Máy & Hãng Sản Xuất</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-label">Hãng Máy / Phân Loại</div>
+                <div class="metric-value" id="driverOemType" style="color: #38bdf8;">Đang quét...</div>
+                <div class="metric-sub" id="driverBrandSub">Hãng sản xuất</div>
+              </div>
+
+              <div class="metric-box" style="grid-column: span 2;">
+                <div class="metric-label">Số Serial Number / Service Tag Chuẩn</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px;">
+                  <div class="metric-value" id="driverSerialDisplay" style="color: #10b981; font-size: 24px;">Đang đọc...</div>
+                  <button class="btn btn-primary" id="btnCopySerial">
+                    📋 Sao Chép Serial
+                  </button>
+                </div>
+                <div class="metric-sub" id="driverSerialHint">Trích xuất từ BIOS / Bo Mạch Chủ</div>
+              </div>
+            </div>
+
+            <div class="card" style="background: rgba(15, 23, 42, 0.6); padding: 18px;">
+              <div style="font-size: 15px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">
+                🌐 Đường Dẫn Tải Driver Chính Hãng
+              </div>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;" id="driverGuideText">
+                Đang xác định trang hỗ trợ...
+              </p>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="btnOpenDriverUrl" style="padding: 10px 22px;">
+                  🚀 Mở Trang Tải Driver Của Hãng
+                </button>
+                <button class="btn btn-secondary" id="btnOpenWinUpdate2">
+                  🔄 Cập Nhật Qua Windows Update
+                </button>
+              </div>
+            </div>
+
+            <!-- Official OEM Tools Guide -->
+            <div class="card" style="background: rgba(15, 23, 42, 0.4); padding: 16px;">
+              <div style="font-size: 14px; font-weight: 700; color: #f59e0b; margin-bottom: 8px;">
+                💡 Khuyến Nghị Cài Đặt Driver Tự Động Chính Hãng:
+              </div>
+              <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.8; margin-left: 20px;">
+                <li><strong>Dell:</strong> Tải công cụ <em>Dell SupportAssist</em> để tự động quét toàn bộ Driver & BIOS mới nhất.</li>
+                <li><strong>HP:</strong> Cài đặt <em>HP Support Assistant</em> để cập nhật trọn bộ driver.</li>
+                <li><strong>Lenovo:</strong> Cài đặt <em>Lenovo Vantage</em> từ Microsoft Store để tự động cập nhật BIOS, Touchpad và Driver phím Fn.</li>
+                <li><strong>ASUS:</strong> Sử dụng phần mềm <em>MyASUS</em> hoặc <em>Armoury Crate</em> để cập nhật driver chuẩn.</li>
+                <li><strong>NVIDIA / AMD:</strong> Tải <em>GeForce Experience</em> hoặc <em>AMD Software</em> để tối ưu card đồ họa mới nhất.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Fullscreen LCD Test Container -->
+  <div id="lcdFullscreenContainer">
+    <div class="lcd-hint" id="lcdHint">
+      Click hoặc Phím Space / Mũi tên để đổi màu • ESC để thoát
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
