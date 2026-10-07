@@ -17,6 +17,22 @@ namespace LongATTestApp
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
+
+            try
+            {
+                var icoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "app.ico");
+                if (File.Exists(icoPath))
+                {
+                    var bmp = new System.Windows.Media.Imaging.BitmapImage();
+                    bmp.BeginInit();
+                    bmp.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+                    bmp.UriSource = new Uri(icoPath, UriKind.Absolute);
+                    bmp.EndInit();
+                    bmp.Freeze();
+                    Icon = bmp;
+                }
+            }
+            catch {}
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
