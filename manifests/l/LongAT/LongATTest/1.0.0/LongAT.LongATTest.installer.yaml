@@ -19,6 +19,6 @@ AppsAndFeaturesEntries:
 Installers:
   - Architecture: x64
     InstallerUrl: https://github.com/vulongvy/LongATTest/releases/download/v1.0.0/LongATTest-Setup-1.0.0.exe
-    InstallerSha256: 958E2AE58CBE8E1A8A47F9B6271C1354E27C26DF6AECE62B371B97CF680A12F2
+    InstallerSha256: 5D5D686739029D6C34E6972DA15832C41DB838C38DEC3C3A18AB3FB35C22757E
 ManifestType: installer
 ManifestVersion: 1.6.0
