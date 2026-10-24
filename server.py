@@ -410,11 +410,14 @@ def launch_app_window(url):
     """Launch Microsoft Edge in native App mode, or Chrome, or default browser."""
     edge_paths = [
         r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Edge\Application\msedge.exe"),
+        os.path.expandvars(r"%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"),
+        os.path.expandvars(r"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe")
     ]
     for ep in edge_paths:
         if os.path.exists(ep):
-            cmd = [ep, f"--app={url}", "--window-size=1380,880"]
+            cmd = [ep, f"--app={url}", "--window-size=1380,880", "--no-first-run", "--no-default-browser-check"]
             try:
                 subprocess.Popen(cmd)
                 return
@@ -424,16 +427,25 @@ def launch_app_window(url):
     chrome_paths = [
         r"C:\Program Files\Google\Chrome\Application\chrome.exe",
         r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe")
+        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+        os.path.expandvars(r"%ProgramFiles%\Google\Chrome\Application\chrome.exe"),
+        os.path.expandvars(r"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe")
     ]
     for cp in chrome_paths:
         if os.path.exists(cp):
-            cmd = [cp, f"--app={url}", "--window-size=1380,880"]
+            cmd = [cp, f"--app={url}", "--window-size=1380,880", "--no-first-run"]
             try:
                 subprocess.Popen(cmd)
                 return
             except Exception:
                 pass
+
+    # Try cmd start msedge --app=...
+    try:
+        subprocess.Popen(f'start msedge --app="{url}" --window-size=1380,880', shell=True)
+        return
+    except Exception:
+        pass
 
     # Fallback to default browser
     webbrowser.open(url)
