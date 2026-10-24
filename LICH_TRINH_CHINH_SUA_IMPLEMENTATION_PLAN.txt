@@ -1,0 +1,107 @@
+================================================================================
+⚡ LỊCH TRÌNH CHỈNH SỬA & KẾ HOẠCH TRIỂN KHAI (IMPLEMENTATION PLAN) ⚡
+               DỰ ÁN: LONG AT TEST (HARDWARE DIAGNOSTIC SUITE)
+================================================================================
+Tác giả: Đặng Vũ Long (Long AT)
+GitHub Repo: https://github.com/vulongvy/LongATTest
+Mục đích: Mở file này trên máy tính mới để tạo project mới và tiếp tục
+          "vibe code" phát triển tính năng cực nhanh mà không bị lỗi.
+================================================================================
+
+--------------------------------------------------------------------------------
+1. TẠI SAO MANG SANG MÁY KHÁC BỊ LỖI TRƯỚC ĐÂY? (ĐỂ TRÁNH LẶP LẠI)
+--------------------------------------------------------------------------------
+- File "LongATTest.bat" gọi trực tiếp "LongATTest.exe" (.NET 8 WPF).
+- Máy tính mới thường CHƯA CÀI:
+  + Microsoft .NET 8.0 Desktop Runtime (x64)
+  + Microsoft Edge WebView2 Runtime
+- Do đó máy mới sẽ không chạy được file .exe dù máy đó đã cài sẵn Python.
+- GIẢI PHÁP ĐÃ TÍCH HỢP SẴN:
+  + Muốn chạy Python ngay: Nhấp đúp vào [ Run_Python.bat ]
+  + Muốn chạy bản .exe chuẩn: Nhấp đúp vào [ Start_Tool.bat ] (tự động tải .NET)
+
+--------------------------------------------------------------------------------
+2. BẢN ĐỒ CẤU TRÚC DỰ ÁN (CẦN SỬA GÌ THÌ VÀO ĐÂU?):
+--------------------------------------------------------------------------------
+📁 web/                          -> GIAO DIỆN CHÍNH (HTML, CSS, JS)
+   ├── index.html                - Giao diện 8 module test & sidebar
+   ├── styles.css                - Giao diện Cyber Dark, bo góc, hiệu ứng led
+   ├── app.js                    - Logic test Loa, Mic, Camera, Canvas, Phím
+   └── logo.png                  - Logo hình tròn trong suốt khử răng cưa
+
+📁 scripts/                      -> ENGINE ĐỌC PHẦN CỨNG (POWERSHELL)
+   ├── get_specs.ps1             - Đo CPU, RAM hãng/bus, GPU VRAM 12GB+, NVMe/HDD
+   ├── get_battery.ps1           - Đo dung lượng pin thiết kế/thực tế, độ chai
+   ├── get_thermal.ps1           - Đo nhiệt độ phần cứng
+   └── stress_cpu.ps1            - Tạo tải quạt tản nhiệt
+
+📁 LongAT_App/                   -> ỨNG DỤNG STANDALONE NATIVE (.NET 8 C# WPF)
+   ├── MainWindow.xaml / .cs     - Cửa sổ ứng dụng, khởi tạo WebView2
+   ├── KeyboardHook.cs           - Hook bàn phím tầng thấp bắt F1-F12 không vướng F12 DevTools
+   ├── LocalServer.cs            - Máy chủ HTTP REST API nội bộ bằng C#
+   ├── HardwareEngine.cs         - Cầu nối gọi scripts PowerShell
+   └── app.ico                   - Icon ứng dụng đa kích thước
+
+🐍 server.py                     -> MÁY CHỦ PYTHON THUẦN (FALLBACK SERVER)
+   - Chạy độc lập, chỉ dùng thư viện chuẩn của Python (không cần pip install)
+   - Tự động mở cửa sổ Edge/Chrome native app (--app=http://127.0.0.1:8765)
+
+🚀 CÁC FILE CHẠY NHANH:
+   ├── Start_Tool.bat            - Khởi động tự động (tự tải .NET & thư viện nếu thiếu)
+   ├── Run_Python.bat            - Khởi động 1-click bằng Python
+   └── installer.iss             - Script tạo bộ cài đặt Windows Setup.exe bằng Inno Setup
+
+--------------------------------------------------------------------------------
+3. LỊCH TRÌNH CHỈNH SỬA & PHÁT TRIỂN TIẾP THEO (ROADMAP):
+--------------------------------------------------------------------------------
+[✓] GIAI ĐOẠN 1 (ĐÃ HOÀN THÀNH 100%):
+  - 8 module test chuẩn kỹ thuật viên (Key, Pin, LCD, Loa, Mic, Cam, Specs, Driver).
+  - Triệt tiêu lỗi F12 nhảy DevTools bằng Windows Hook WH_KEYBOARD_LL.
+  - Sửa lỗi đo VRAM GPU 12GB (RTX 3060), nhận diện đúng hãng RAM (SSTC, Kingston).
+  - Gói siêu nhẹ 232 KB (On-demand Bootstrap) tự tải tài nguyên khi bấm Start.
+  - Đăng ký app lên GitHub và gửi Pull Request #448294 lên Microsoft winget-pkgs.
+
+[⏳] GIAI ĐOẠN 2 (LỊCH TRÌNH TIẾP TỤC "VIBE CODE" TRÊN MÁY MỚI):
+  - Nhiệm vụ 2.1: Xuất báo cáo kiểm tra máy ra file PDF hoặc HTML có màu sắc đẹp
+    (Thay vì chỉ xuất file .txt đơn giản như hiện tại).
+  - Nhiệm vụ 2.2: Thêm tính năng Auto-Update (Tự động kiểm tra GitHub Releases
+    khi mở app, nếu có bản mới thì hiện thông báo 1-click cập nhật).
+  - Nhiệm vụ 2.3: Tối ưu hiển thị cho các màn hình laptop nhỏ (độ phân giải 1366x768).
+
+[🔮] GIAI ĐOẠN 3 (TÍNH NĂNG NÂNG CAO CHO KỸ THUẬT VIÊN):
+  - Nhiệm vụ 3.1: Đọc thông số S.M.A.R.T của ổ cứng (Số giờ đã chạy Power-On Hours,
+    tổng dung lượng đã ghi TBW, % sức khỏe chi tiết).
+  - Nhiệm vụ 3.2: Thêm module kiểm tra Touchpad laptop (vẽ đường rê chuột, test cảm ứng đa điểm 2-3 ngón).
+  - Nhiệm vụ 3.3: Thêm module quét cổng ngoại vi (kiểm tra nhận diện cắm USB, quét thiết bị Bluetooth).
+
+--------------------------------------------------------------------------------
+4. CÁCH "VIBE CODING" SIÊU NHANH TRÊN MÁY TÍNH MỚI:
+--------------------------------------------------------------------------------
+Bước 1: Mở thư mục code trên máy mới bằng VS Code / Cursor / Sublime Text.
+
+Bước 2: Muốn sửa giao diện hoặc thêm nút mới:
+  - Mở "web/index.html" thêm thẻ HTML.
+  - Mở "web/styles.css" chỉnh màu sắc, kích thước.
+  - Mở "web/app.js" viết hàm xử lý sự kiện.
+  - Mẹo test nhanh (Hot-reload): Nhấp chạy "Run_Python.bat", ra trình duyệt nhấn F5
+    là thấy ngay kết quả sửa, KHÔNG CẦN BIÊN DỊCH LẠI!
+
+Bước 3: Muốn sửa logic đo phần cứng:
+  - Mở thư mục "scripts/" sửa file "get_specs.ps1" hoặc "get_battery.ps1".
+  - Test trực tiếp bằng lệnh PowerShell:
+    powershell -ExecutionPolicy Bypass -File scripts\get_specs.ps1
+  - Cả C# lẫn Python đều tự động nhận thông số mới ngay lập tức!
+
+Bước 4: Đóng gói lại thành file .exe sau khi code xong:
+  Mở PowerShell trong thư mục này và gõ:
+    dotnet publish LongAT_App/LongATTestApp.csproj -c Release -o publish /p:PublishSingleFile=true /p:SelfContained=false
+    Copy-Item "publish\LongATTest.exe" -Destination "LongATTest.exe" -Force
+
+Bước 5: Đẩy code mới lên GitHub:
+    git add .
+    git commit -m "feat: cap nhat tinh nang moi"
+    git push origin main
+
+================================================================================
+Chúc bạn "vibe code" dự án Long AT Test thật mượt mà trên máy tính mới!
+================================================================================
